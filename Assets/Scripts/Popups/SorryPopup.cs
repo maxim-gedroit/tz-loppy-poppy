@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class SorryPopup : Popup
 {
     public static event Action OnNewEquation;
-    public static event Action OnQuit;
 
     [SerializeField] private Button _newEquation;
     [SerializeField] private Button _quit;
@@ -18,7 +17,6 @@ public class SorryPopup : Popup
 
     private void OnQuitClick()
     {
-        OnQuit?.Invoke();
         Hide();
     }
 
