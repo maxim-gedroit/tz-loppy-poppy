@@ -1,26 +1,22 @@
 using System;
 using System.Globalization;
-using UnityEngine;
 using Exception = System.Exception;
 
 public class MainPresenter
 {
     private MainData _data;
     private MainView _view;
-
-    private String _tempInput;
     
     public void Init(MainView view)
     {
+        _data = new MainData();
         _view = view;
         _view.OnDispose += Save;
         _view.OnButtonClicked += Division;
         SorryPopup.OnNewEquation += Reset;
         
-        Load();
-        
-        if(_tempInput != string.Empty)
-            Division(_tempInput);
+        if(_data.State != string.Empty)
+            Division(_data.State);
     }
 
     private void Reset()
@@ -30,7 +26,7 @@ public class MainPresenter
 
     private void Division(String input)
     {
-        _tempInput = input;
+        _data.State = input;
         var arr = Validate(input);
         if (arr == null)
         {
@@ -48,7 +44,7 @@ public class MainPresenter
         }
 
         var res = number1 / number2;
-        _view.SetUI(_tempInput,res.ToString());
+        _view.SetUI(_data.State,res.ToString());
     }
 
     private String[] Validate(String input)
@@ -66,14 +62,9 @@ public class MainPresenter
 
     private void Save()
     {
-        PlayerPrefs.SetString("LoppyPoppyState",_tempInput);
+        _data.Save();
     }
-
-    private void Load()
-    {
-        _tempInput = PlayerPrefs.GetString("LoppyPoppyState");
-    }
-
+    
     private float TryParse(String input)
     {
         try
